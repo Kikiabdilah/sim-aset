@@ -12,7 +12,8 @@ class AppUserController extends Controller
      */
     public function index()
     {
-        //
+           $users = AppUser::all();
+    return view('user.index', compact('users'));
     }
 
     /**
@@ -28,7 +29,20 @@ class AppUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+     AppUser::create([
+        'username' => $request->username,
+        'password' => bcrypt($request->password),
+        'nama_pegawai' => $request->nama_pegawai,
+        'nik' => $request->nik,
+        'ktp' => $request->ktp,
+        'role' => $request->role,
+        'genre' => $request->genre,
+        'status' => 1,
+        'valid' => 1,
+        'image' => null,
+    ]);
+
+    return redirect()->back();
     }
 
     /**
