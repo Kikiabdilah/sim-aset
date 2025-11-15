@@ -92,16 +92,15 @@
         </div>
 
         {{-- Tombol --}}
-        <div class="flex items-center justify-end mt-4">
-            <a
-                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md"
-                href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+        <x-primary-button class="w-full">
+            {{ __('Register') }}
+        </x-primary-button>
 
-            <x-primary-button class="ml-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+        <a
+            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md justify-end flex "
+            href="{{ route('login') }}">
+            {{ __('Already registered?') }}
+        </a>
+
     </form>
 </x-guest-layout>
