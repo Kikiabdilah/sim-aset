@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AppUser extends Model
 {
-   protected $table = 'app_users'; // penting karena tidak pakai nama jamak (users)
+    protected $table = 'app_users';
 
     protected $fillable = [
         'username',
