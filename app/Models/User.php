@@ -41,6 +41,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+        public function username()
+    {
+        return 'username';
+    }
+
+
     /**
      * Get the attributes that should be cast.
      *

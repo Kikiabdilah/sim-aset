@@ -12,17 +12,19 @@
                 <img src="https://ui-avatars.com/api/?name={{ auth()->user()->nama_pegawai }}&background=0D8ABC&color=fff"
                     width="35" height="35" class="rounded-circle me-2">
                 <span
-                class="mr-2">{{ auth()->user()->nama_pegawai }}</span>
+                    class="mr-2">{{ auth()->user()->nama_pegawai }}</span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
                         <i class="bi bi-person me-2"></i> Profile
                     </a>
                 </li>
 
-                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
 
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
@@ -41,7 +43,12 @@
 <script>
     function updateDateTime() {
         const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
         const time = now.toLocaleTimeString('id-ID');
         const date = now.toLocaleDateString('id-ID', options);
 
