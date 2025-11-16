@@ -26,14 +26,14 @@
             </div>
         </div>
 
-        {{-- Delete User --}}
+        <!-- {{-- Delete User --}}
         <div class="col-md-12">
             <div class="card shadow-sm border-danger">
                 <div class="card-body">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 
