@@ -5,15 +5,24 @@
 {{-- SIDEBAR --}}
 <div class="bg-dark text-white p-3" style="width:260px; min-height:100vh;">
 
-    {{-- Profile --}}
-    <div class="text-center mb-4">
-        <img src="https://ui-avatars.com/api/?name={{ ucwords(auth()->user()->username) }}&background=0D8ABC&color=fff"
-            class="rounded-circle mb-2 d-block mx-auto"
-            width="70"
-            height="70">
+{{-- Profile --}}
+<div class="text-center mb-4">
 
-        <h6 class="mb-0">{{ ucwords(auth()->user()->username) }}</h6>
-    </div>
+    @php
+        $user = auth()->user();
+        $photo = $user->image
+            ? asset('storage/' . $user->image)
+            : 'https://ui-avatars.com/api/?name=' . urlencode($user->username) . '&background=0D8ABC&color=fff';
+    @endphp
+
+    <img src="{{ $photo }}"
+        class="rounded-circle mb-2 d-block mx-auto"
+        width="70"
+        height="70"
+        style="object-fit: cover;">
+
+    <h6 class="mb-0">{{ ucwords($user->username) }}</h6>
+</div>
 
     {{-- Menu --}}
     <ul class="nav flex-column">

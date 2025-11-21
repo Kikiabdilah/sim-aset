@@ -1,3 +1,10 @@
+@php
+$user = auth()->user();
+$photo = $user->image
+? asset('storage/' . $user->image)
+: 'https://ui-avatars.com/api/?name=' . urlencode($user->nama_pegawai) . '&background=0D8ABC&color=fff';
+@endphp
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4 py-2 shadow-sm">
 
     {{-- Tanggal & Waktu --}}
@@ -9,10 +16,10 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://ui-avatars.com/api/?name={{ ucwords(auth()->user()->nama_pegawai) }}&background=0D8ABC&color=fff"
-                    width="35" height="35" class="rounded-circle me-2">
-                <span
-                    class="mr-2">{{ ucwords(auth()->user()->nama_pegawai) }}</span>
+
+                <img src="{{ $photo }}" width="35" height="35" class="rounded-circle me-2" style="object-fit: cover;">
+
+                <span class="mr-2">{{ ucwords($user->nama_pegawai) }}</span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
