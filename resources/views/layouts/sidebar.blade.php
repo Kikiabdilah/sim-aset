@@ -7,12 +7,12 @@
 
     {{-- Profile --}}
     <div class="text-center mb-4">
-        <img src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=0D8ABC&color=fff"
+        <img src="https://ui-avatars.com/api/?name={{ ucwords(auth()->user()->username) }}&background=0D8ABC&color=fff"
             class="rounded-circle mb-2 d-block mx-auto"
             width="70"
             height="70">
 
-        <h6 class="mb-0">{{ auth()->user()->username }}</h6>
+        <h6 class="mb-0">{{ ucwords(auth()->user()->username) }}</h6>
     </div>
 
     {{-- Menu --}}

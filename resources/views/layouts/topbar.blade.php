@@ -9,10 +9,10 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://ui-avatars.com/api/?name={{ auth()->user()->nama_pegawai }}&background=0D8ABC&color=fff"
+                <img src="https://ui-avatars.com/api/?name={{ ucwords(auth()->user()->nama_pegawai) }}&background=0D8ABC&color=fff"
                     width="35" height="35" class="rounded-circle me-2">
                 <span
-                    class="mr-2">{{ auth()->user()->nama_pegawai }}</span>
+                    class="mr-2">{{ ucwords(auth()->user()->nama_pegawai) }}</span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
