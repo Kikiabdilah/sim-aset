@@ -24,7 +24,6 @@
         {{-- MAIN WRAPPER --}}
         <div class="flex-grow-1">
 
-            {{-- TOPBAR (di sini tempatnya yang benar) --}}
             @include('layouts.topbar')
 
             {{-- MAIN CONTENT --}}

@@ -1,28 +1,28 @@
 @php
-    $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
+$role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
 @endphp
 
 {{-- SIDEBAR --}}
 <div class="bg-dark text-white p-3" style="width:260px; min-height:100vh;">
 
-{{-- Profile --}}
-<div class="text-center mb-4">
+    {{-- Profile --}}
+    <div class="text-center mb-4">
 
-    @php
+        @php
         $user = auth()->user();
         $photo = $user->image
-            ? asset('storage/' . $user->image)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($user->username) . '&background=0D8ABC&color=fff';
-    @endphp
+        ? asset('storage/' . $user->image)
+        : 'https://ui-avatars.com/api/?name=' . urlencode($user->username) . '&background=0D8ABC&color=fff';
+        @endphp
 
-    <img src="{{ $photo }}"
-        class="rounded-circle mb-2 d-block mx-auto"
-        width="70"
-        height="70"
-        style="object-fit: cover;">
+        <img src="{{ $photo }}"
+            class="rounded-circle mb-2 d-block mx-auto"
+            width="70"
+            height="70"
+            style="object-fit: cover;">
 
-    <h6 class="mb-0">{{ ucwords($user->username) }}</h6>
-</div>
+        <h6 class="mb-0">{{ ucwords($user->username) }}</h6>
+    </div>
 
     {{-- Menu --}}
     <ul class="nav flex-column">
@@ -38,8 +38,9 @@
 
         {{-- Usulan Pengadaan Aset (semua role) --}}
         <li class="nav-item mb-1">
-            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
-                href="#">
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
+    {{ request()->routeIs('admin.usulan.create') ? 'bg-secondary' : '' }}"
+                href="{{ route('admin.usulan.create') }}">
                 <i class="bi bi-file-earmark-plus"></i> Usulan Pengadaan Aset
             </a>
         </li>
