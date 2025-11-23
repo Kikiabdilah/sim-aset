@@ -36,14 +36,40 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
             </a>
         </li>
 
-        {{-- Usulan Pengadaan Aset (semua role) --}}
+        {{-- === MENU ADMIN === --}}
+        @if ($role == 1)
         <li class="nav-item mb-1">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
-    {{ request()->routeIs('admin.usulan.create') ? 'bg-secondary' : '' }}"
+            {{ request()->routeIs('admin.usulan.create') ? 'bg-secondary' : '' }}"
                 href="{{ route('admin.usulan.create') }}">
                 <i class="bi bi-file-earmark-plus"></i> Usulan Pengadaan Aset
             </a>
         </li>
+        @endif
+
+        {{-- === MENU MANAGER === --}}
+        @if ($role == 2)
+        <li class="nav-item mb-1">
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
+            {{ request()->routeIs('manager.approval.index') ? 'bg-secondary' : '' }}"
+                href="{{ route('manager.approval.index') }}">
+                <i class="bi bi-check2-circle"></i> Approval Manager
+            </a>
+        </li>
+        @endif
+
+        {{-- === MENU DIREKTUR === --}}
+        @if ($role == 3)
+        <li class="nav-item mb-1">
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
+            {{ request()->routeIs('direktur.approval.index') ? 'bg-secondary' : '' }}"
+                href="{{ route('direktur.approval.index') }}">
+                <i class="bi bi-check2-square"></i> Approval Direktur
+            </a>
+        </li>
+        @endif
+
+
 
         {{-- Penambahan / Pengadaan Aset (hanya Admin = role 1) --}}
         @if ($role == 1)
