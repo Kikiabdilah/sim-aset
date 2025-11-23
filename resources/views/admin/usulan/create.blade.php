@@ -59,7 +59,7 @@
 
                 </div>
 
-                <button class="btn btn-primary mt-3 px-4">Simpan</button>
+                <button class="btn btn-primary mt-3 px-4">Save</button>
             </form>
         </div>
     </div>
