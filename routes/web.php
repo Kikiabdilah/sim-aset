@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
 
 // ADMIN
 Route::prefix('admin/usulan')->name('admin.usulan.')->group(function () {
-    Route::get('/', [UsulanAsetController::class, 'index'])->name('index');
+    // Route::get('/', [UsulanAsetController::class, 'index'])->name('index');
     Route::get('/create', [UsulanAsetController::class, 'create'])->name('create');
     Route::post('/store', [UsulanAsetController::class, 'store'])->name('store');
 });

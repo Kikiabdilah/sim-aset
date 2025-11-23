@@ -17,8 +17,8 @@ class UsulanAsetController extends Controller
 
     public function create()
     {
-        $aset = Asset::all();
-        return view('admin.usulan.create', compact('aset'));
+        $usulan = UsulanAset::all(); // atau sesuai kebutuhan
+        return view('admin.usulan.create', compact('usulan'));
     }
 
 public function store(Request $req)

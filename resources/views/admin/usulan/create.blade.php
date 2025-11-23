@@ -2,46 +2,128 @@
 
 @section('content')
 <div class="container">
-    <h4>Tambah Usulan Pengadaan</h4>
 
-    <form action="{{ route('admin.usulan.store') }}" method="POST">
-        @csrf
+    <h4 class="mb-3 fw-bold">Usulan Pengadaan Aset</h4>
 
-        {{-- Kode Aset --}}
-        <label>Kode Aset</label>
-        <input type="text" name="kd_brg" class="form-control" required>
+    {{-- Form Tambah Usulan --}}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white fw-semibold py-2">
+            Tambah Usulan Aset
+        </div>
 
-        {{-- Nama Aset --}}
-        <label class="mt-2">Nama Aset</label>
-        <input type="text" name="nm_brg" class="form-control" required>
+        <div class="card-body">
+            <form action="{{ route('admin.usulan.store') }}" method="POST">
+                @csrf
 
-        {{-- Jumlah --}}
-        <label class="mt-2">Jumlah</label>
-        <input type="number" name="jmlh_brg" class="form-control" required>
+                <div class="row g-3">
 
-        {{-- Harga --}}
-        <label class="mt-2">Harga</label>
-        <input type="number" name="harga_brg" class="form-control" required>
+                    <div class="col-md-3">
+                        <label class="form-label">Kode Aset</label>
+                        <input type="text" name="kd_brg" class="form-control" required>
+                    </div>
 
-        {{-- Satuan --}}
-        <label class="mt-2">Satuan</label>
-        <select name="satuan_brg" class="form-control" required>
-            <option value="">-- Pilih --</option>
-            <option value="Unit">Unit</option>
-            <option value="Set">Set</option>
-            <option value="Pcs">Pcs</option>
-        </select>
+                    <div class="col-md-3">
+                        <label class="form-label">Nama Aset</label>
+                        <input type="text" name="nm_brg" class="form-control" required>
+                    </div>
 
-        {{-- Umur Ekonomis --}}
-        <label class="mt-2">Umur Ekonomis</label>
-        <input type="number" name="masa_manfaat" class="form-control" required>
+                    <div class="col-md-2">
+                        <label class="form-label">Jumlah</label>
+                        <input type="number" name="jmlh_brg" class="form-control" required>
+                    </div>
 
-        {{-- Keterangan --}}
-        <label class="mt-2">Keterangan</label>
-        <textarea name="ket" class="form-control"></textarea>
+                    <div class="col-md-2">
+                        <label class="form-label">Harga</label>
+                        <input type="number" name="harga_brg" class="form-control" required>
+                    </div>
 
-        {{-- Tombol --}}
-        <button class="btn btn-primary mt-3">Save</button>
-    </form>
+                    <div class="col-md-2">
+                        <label class="form-label">Satuan</label>
+                        <select name="satuan_brg" class="form-select" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Unit">Unit</option>
+                            <option value="Set">Set</option>
+                            <option value="Pcs">Pcs</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Umur Ekonomis (Tahun)</label>
+                        <input type="number" name="masa_manfaat" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-9">
+                        <label class="form-label">Keterangan</label>
+                        <textarea name="ket" class="form-control" rows="2"></textarea>
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary mt-3 px-4">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    {{-- Tabel Daftar Usulan --}}
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white fw-semibold py-2">
+            Daftar Usulan Aset
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mb-0 align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th style="width: 130px;">Kode Usulan</th>
+                            <th>Nama Barang</th>
+                            <th style="width: 90px;">Jumlah</th>
+                            <th style="width: 120px;">Tanggal</th>
+                            <th style="width: 120px;">Manager</th>
+                            <th style="width: 120px;">Direktur</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($usulan as $u)
+                        <tr>
+                            <td>{{ $u->kd_usulan }}</td>
+                            <td>{{ $u->nm_brg }}</td>
+                            <td>{{ $u->jmlh_brg }}</td>
+                            <td>{{ $u->created_at->format('Y-m-d') }}</td>
+
+                            {{-- Manager Status --}}
+                            <td>
+                                @if ($u->stts_approval_mg == 'pending')
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                @elseif ($u->stts_approval_mg == 'approved')
+                                    <span class="badge bg-success">Approved</span>
+                                @else
+                                    <span class="badge bg-danger">Rejected</span>
+                                @endif
+                            </td>
+
+                            {{-- Direktur Status --}}
+                            <td>
+                                @if ($u->stts_approval_dir == 'pending')
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                @elseif ($u->stts_approval_dir == 'approved')
+                                    <span class="badge bg-success">Approved</span>
+                                @else
+                                    <span class="badge bg-danger">Rejected</span>
+                                @endif
+                            </td>
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 @endsection
