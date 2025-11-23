@@ -2,37 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\UsulanAset;
+use Illuminate\Http\Request;
 
 class ApprovalDirekturController extends Controller
 {
     public function index()
     {
-        $data = UsulanAset::where('stts_approval_mg', '2')
-                          ->where('stts_approval_dir', '1')
-                          ->get();
+        // HANYA tampilkan data yang sudah di-approve Manager
+        $usulan = UsulanAset::where('stts_approval_mg', 'approved')->get();
 
-        return view('direktur.approval.index', compact('data'));
+        return view('direktur.approval.index', compact('usulan'));
     }
 
     public function approve($id)
     {
-        UsulanAset::find($id)->update([
-            'stts_approval_dir' => '2',
-            'tgl_approval_dir' => now(),
-        ]);
+        $data = UsulanAset::findOrFail($id);
+        $data->stts_approval_dir = 'approved';
+        $data->tgl_approval_dir = now();
+        $data->save();
 
-        return back()->with('success', 'Usulan disetujui Direktur');
+        return redirect()->back()->with('success', 'Usulan disetujui Direktur.');
     }
 
     public function reject($id)
     {
-        UsulanAset::find($id)->update([
-            'stts_approval_dir' => '3',
-            'tgl_approval_dir' => now(),
-        ]);
+        $data = UsulanAset::findOrFail($id);
+        $data->stts_approval_dir = 'rejected';
+        $data->tgl_approval_dir = now();
+        $data->save();
 
-        return back()->with('success', 'Usulan ditolak Direktur');
+        return redirect()->back()->with('success', 'Usulan ditolak Direktur.');
     }
 }

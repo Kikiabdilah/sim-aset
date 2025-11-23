@@ -2,34 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\UsulanAset;
+use Illuminate\Http\Request;
 
 class ApprovalManagerController extends Controller
 {
     public function index()
     {
-        $data = UsulanAset::where('stts_approval_mg', '1')->get();
-        return view('manager.approval.index', compact('data'));
+        // Hanya tampilkan yang belum di-ACC Direktur dan belum di-approve manager
+        $usulan = UsulanAset::orderBy('created_at', 'desc')->get();
+
+        return view('manager.approval.index', compact('usulan'));
     }
 
     public function approve($id)
     {
-        UsulanAset::find($id)->update([
-            'stts_approval_mg' => '2',
-            'tgl_approval_mg' => now(),
-        ]);
+        $usulan = UsulanAset::findOrFail($id);
 
-        return back()->with('success', 'Usulan disetujui Manager');
+        $usulan->stts_approval_mg = 'approved';
+        $usulan->tgl_approval_mg = now();
+        $usulan->save();
+
+        return redirect()
+            ->route('manager.approval.index')
+            ->with('success', 'Usulan berhasil di-ACC Manager!');
     }
 
     public function reject($id)
     {
-        UsulanAset::find($id)->update([
-            'stts_approval_mg' => '3',
-            'tgl_approval_mg' => now(),
-        ]);
+        $usulan = UsulanAset::findOrFail($id);
 
-        return back()->with('success', 'Usulan ditolak Manager');
+        $usulan->stts_approval_mg = 'rejected';
+        $usulan->tgl_approval_mg = now();
+        $usulan->save();
+
+        return redirect()
+            ->route('manager.approval.index')
+            ->with('success', 'Usulan berhasil ditolak oleh Manager.');
     }
 }

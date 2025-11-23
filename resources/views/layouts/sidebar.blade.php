@@ -35,7 +35,6 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
         </li>
-
         {{-- === MENU ADMIN === --}}
         @if ($role == 1)
         <li class="nav-item mb-1">
@@ -68,8 +67,6 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
             </a>
         </li>
         @endif
-
-
 
         {{-- Penambahan / Pengadaan Aset (hanya Admin = role 1) --}}
         @if ($role == 1)

@@ -32,15 +32,22 @@ Route::prefix('admin/usulan')->name('admin.usulan.')->group(function () {
 // MANAGER
 Route::prefix('manager/approval')->name('manager.approval.')->group(function () {
     Route::get('/', [ApprovalManagerController::class, 'index'])->name('index');
-    Route::get('/approve/{id}', [ApprovalManagerController::class, 'approve'])->name('approve');
-    Route::get('/reject/{id}', [ApprovalManagerController::class, 'reject'])->name('reject');
+    Route::post('/approve/{id}', [ApprovalManagerController::class, 'approve'])->name('approve');
+    Route::post('/reject/{id}', [ApprovalManagerController::class, 'reject'])->name('reject');
 });
 
-// DIREKTUR
-Route::prefix('direktur/approval')->name('direktur.approval.')->group(function () {
-    Route::get('/', [ApprovalDirekturController::class, 'index'])->name('index');
-    Route::get('/approve/{id}', [ApprovalDirekturController::class, 'approve'])->name('approve');
-    Route::get('/reject/{id}', [ApprovalDirekturController::class, 'reject'])->name('reject');
+// Halaman Direktur
+Route::prefix('direktur')->name('direktur.')->group(function () {
+
+    Route::get('/approval', [\App\Http\Controllers\ApprovalDirekturController::class, 'index'])
+        ->name('approval.index');
+
+    Route::post('/approval/{id}/approve', [\App\Http\Controllers\ApprovalDirekturController::class, 'approve'])
+        ->name('approval.approve');
+
+    Route::post('/approval/{id}/reject', [\App\Http\Controllers\ApprovalDirekturController::class, 'reject'])
+        ->name('approval.reject');
 });
+
 
 require __DIR__ . '/auth.php';
