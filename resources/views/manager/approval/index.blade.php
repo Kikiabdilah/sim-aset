@@ -5,10 +5,19 @@
 
     <h3>Approval Manager</h3>
 
+    {{-- SWEETALERT2 SUCCESS NOTIF --}}
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "{{ session('success') }}",
+                    timer: 1800,
+                    showConfirmButton: false
+                });
+            });
+        </script>
     @endif
 
     <table class="table table-bordered mt-3">
@@ -34,10 +43,8 @@
                 <td>
                     @if($row->stts_approval_mg == 'approved')
                         <span class="badge bg-success">Approved</span>
-
                     @elseif($row->stts_approval_mg == 'rejected')
                         <span class="badge bg-danger">Rejected</span>
-
                     @else
                         <span class="badge bg-warning text-dark">Pending</span>
                     @endif
@@ -48,17 +55,15 @@
                     @if($row->stts_approval_mg == 'pending')
 
                         {{-- BUTTON APPROVE --}}
-                        <form method="POST" action="{{ route('manager.approval.approve', $row->id) }}"
-                              onsubmit="return confirm('Yakin menyetujui usulan ini?')">
+                        <form method="POST" class="approveForm" action="{{ route('manager.approval.approve', $row->id) }}">
                             @csrf
-                            <button class="btn btn-success btn-sm">Accept</button>
+                            <button type="button" class="btn btn-success btn-sm approveBtn">Accept</button>
                         </form>
 
                         {{-- BUTTON REJECT --}}
-                        <form method="POST" action="{{ route('manager.approval.reject', $row->id) }}"
-                              onsubmit="return confirm('Yakin menolak usulan ini?')">
+                        <form method="POST" class="rejectForm" action="{{ route('manager.approval.reject', $row->id) }}">
                             @csrf
-                            <button class="btn btn-danger btn-sm">Decline</button>
+                            <button type="button" class="btn btn-danger btn-sm rejectBtn">Decline</button>
                         </form>
 
                     @else
@@ -78,4 +83,52 @@
     </table>
 
 </div>
+
+{{-- SweetAlert2 Confirmation Script --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // APPROVE CONFIRMATION
+        document.querySelectorAll('.approveBtn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                let form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Yakin menyetujui?',
+                    text: "Usulan akan di-ACC oleh Manager!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Accept',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // REJECT CONFIRMATION
+        document.querySelectorAll('.rejectBtn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                let form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Yakin menolak?',
+                    text: "Usulan akan ditolak oleh Manager!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Reject',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+    });
+</script>
+
 @endsection
