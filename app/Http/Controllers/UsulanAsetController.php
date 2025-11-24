@@ -45,7 +45,7 @@ public function store(Request $req)
     ]);
 
 
-        return redirect()->route('admin.usulan.index')
+        return redirect()->route('admin.usulan.create')
             ->with('success', 'Usulan berhasil dikirim');
     }
 }
