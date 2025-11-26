@@ -68,20 +68,10 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
         </li>
         @endif
 
-        {{-- Penambahan / Pengadaan Aset (hanya Admin = role 1) --}}
-        @if ($role == 1)
-        <li class="nav-item mb-1">
-            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
-                href="#">
-                <i class="bi bi-bag-plus"></i> Penambahan / Pengadaan Aset
-            </a>
-        </li>
-        @endif
-
         {{-- Daftar Aset (semua role) --}}
         <li class="nav-item mb-1">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
-                href="#">
+                href="{{ route('aset.index') }}">
                 <i class="bi bi-box-seam"></i> Daftar Aset
             </a>
         </li>
