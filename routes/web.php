@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsulanAsetController;
 use App\Http\Controllers\ApprovalManagerController;
 use App\Http\Controllers\ApprovalDirekturController;
+use App\Http\Controllers\AsetController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,5 +50,6 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
         ->name('approval.reject');
 });
 
-
 require __DIR__ . '/auth.php';
+
+Route::get('/aset', [AsetController::class, 'index'])->name('aset.index');
