@@ -74,13 +74,13 @@
 
                     {{-- BUTTON APPROVE --}}
                     <button class="btn btn-success btn-sm"
-                        onclick="confirmApproval('{{ route('direktur.approval.approve', $row->id) }}')">
+                        onclick="confirmApproval(`{{ route('direktur.approval.approve', $row->id) }}`)">
                         Accept
                     </button>
 
                     {{-- BUTTON DECLINE --}}
                     <button class="btn btn-danger btn-sm"
-                        onclick="confirmReject('{{ route('direktur.approval.reject', $row->id) }}')">
+                        onclick="confirmReject(`{{ route('direktur.approval.reject', $row->id) }}`)">
                         Decline
                     </button>
 
@@ -102,63 +102,66 @@
     </table>
 
 </div>
+{{-- SWEETALERT2 SCRIPT --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
 
 // APPROVE
 function confirmApproval(url) {
-Swal.fire({
-title: "Yakin?",
-text: "Anda akan menyetujui usulan ini.",
-icon: "question",
-showCancelButton: true,
-confirmButtonColor: "#28a745",
-cancelButtonColor: "#d33",
-confirmButtonText: "Accept"
-}).then((result) => {
-if (result.isConfirmed) {
-let form = document.createElement('form');
-form.method = 'POST';
-form.action = url;
+    Swal.fire({
+        title: "Yakin?",
+        text: "Anda akan menyetujui usulan ini.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Accept"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.action = url;
 
-let csrf = document.createElement('input');
-csrf.type = 'hidden';
-csrf.name = '_token';
-csrf.value = '{{ csrf_token() }}';
+            let csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = '{{ csrf_token() }}';
 
-form.appendChild(csrf);
-document.body.appendChild(form);
-form.submit();
-}
-});
+            form.appendChild(csrf);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }
 
 // REJECT
 function confirmReject(url) {
-Swal.fire({
-title: "Yakin?",
-text: "Anda akan menolak usulan ini.",
-icon: "warning",
-showCancelButton: true,
-confirmButtonColor: "#d33",
-cancelButtonColor: "#3085d6",
-confirmButtonText: "Reject"
-}).then((result) => {
-if (result.isConfirmed) {
-let form = document.createElement('form');
-form.method = 'POST';
-form.action = url;
+    Swal.fire({
+        title: "Yakin?",
+        text: "Anda akan menolak usulan ini.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Reject"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.action = url;
 
-let csrf = document.createElement('input');
-csrf.type = 'hidden';
-csrf.name = '_token';
-csrf.value = '{{ csrf_token() }}';
+            let csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = '{{ csrf_token() }}';
 
-form.appendChild(csrf);
-document.body.appendChild(form);
-form.submit();
-}
-});
+            form.appendChild(csrf);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }
 
 </script>
-
 @endsection
