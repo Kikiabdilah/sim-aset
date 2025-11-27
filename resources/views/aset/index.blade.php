@@ -13,22 +13,22 @@
             <div class="col-md-4">
                 <label class="form-label">Cari Barang</label>
                 <input type="text" name="search" class="form-control"
-                       value="{{ request('search') }}"
-                       placeholder="Cari nama atau kode barang...">
+                    value="{{ request('search') }}"
+                    placeholder="Cari nama atau kode barang...">
             </div>
 
             {{-- TANGGAL AWAL --}}
             <div class="col-md-3">
                 <label class="form-label">Tanggal Awal</label>
-                <input type="date" name="tanggal_awal" class="form-control"
-                       value="{{ request('tanggal_awal') }}">
+                <input type="text" class="form-control" id="tanggal_awal" name="tanggal_awal"
+                    value="{{ request('tanggal_awal') }}">
             </div>
 
             {{-- TANGGAL AKHIR --}}
             <div class="col-md-3">
                 <label class="form-label">Tanggal Akhir</label>
-                <input type="date" name="tanggal_akhir" class="form-control"
-                       value="{{ request('tanggal_akhir') }}">
+                <input type="text" class="form-control" id="tanggal_akhir" name="tanggal_akhir"
+                    value="{{ request('tanggal_akhir') }}">
             </div>
 
             {{-- BUTTONS --}}
@@ -64,8 +64,7 @@
                 <td>{{ $row->masa_manfaat }}</td>
                 <td>{{ number_format($row->harga_brg) }}</td>
                 <td>{{ number_format($row->jmlh_brg * $row->harga_brg) }}</td>
-<td>{{ \Carbon\Carbon::parse($row->tgl_approval_dir)->format('d/m/Y') }}</td>
-
+                <td>{{ \Carbon\Carbon::parse($row->tgl_approval_dir)->format('d/m/Y') }}</td>
             </tr>
             @empty
             <tr>
@@ -77,4 +76,14 @@
     </table>
 
 </div>
+
+<script>
+    flatpickr("#tanggal_awal", {
+        dateFormat: "d/m/Y"
+    });
+
+    flatpickr("#tanggal_akhir", {
+        dateFormat: "d/m/Y"
+    });
+</script>
 @endsection
