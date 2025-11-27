@@ -37,6 +37,12 @@
                         <input type="number" name="harga_brg" class="form-control" required>
                     </div>
 
+                    <div class="col-md-3">
+                        <label class="form-label">Tanggal Pengadaan</label>
+                        <input type="text" class="form-control" id="tanggal_pengadaan" name="tanggal_pengadaan"
+                            value="{{ request('tanggal_pengadaan') }}">
+                    </div>
+
                     <div class="col-md-2">
                         <label class="form-label">Satuan</label>
                         <select name="satuan_brg" class="form-select" required>
@@ -96,22 +102,22 @@
                             {{-- Manager Status --}}
                             <td>
                                 @if ($u->stts_approval_mg == 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                <span class="badge bg-warning text-dark">Pending</span>
                                 @elseif ($u->stts_approval_mg == 'approved')
-                                    <span class="badge bg-success">Approved</span>
+                                <span class="badge bg-success">Approved</span>
                                 @else
-                                    <span class="badge bg-danger">Rejected</span>
+                                <span class="badge bg-danger">Rejected</span>
                                 @endif
                             </td>
 
                             {{-- Direktur Status --}}
                             <td>
                                 @if ($u->stts_approval_dir == 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                <span class="badge bg-warning text-dark">Pending</span>
                                 @elseif ($u->stts_approval_dir == 'approved')
-                                    <span class="badge bg-success">Approved</span>
+                                <span class="badge bg-success">Approved</span>
                                 @else
-                                    <span class="badge bg-danger">Rejected</span>
+                                <span class="badge bg-danger">Rejected</span>
                                 @endif
                             </td>
 
@@ -126,4 +132,12 @@
     </div>
 
 </div>
+
+
+<script>
+    flatpickr("#tanggal_pengadaan", {
+        dateFormat: "d/m/Y"
+    });
+
+</script>
 @endsection
