@@ -49,9 +49,9 @@
                 <th>Nama Barang</th>
                 <th>Jumlah</th>
                 <th>Umur Ekonomis</th>
+                <th>Tanggal Pengadaan</th>
                 <th>Harga</th>
                 <th>Total</th>
-                <th>Tanggal</th>
             </tr>
         </thead>
 
@@ -62,9 +62,9 @@
                 <td>{{ $row->nm_brg }}</td>
                 <td>{{ $row->jmlh_brg }}</td>
                 <td>{{ $row->masa_manfaat }}</td>
+                <td>{{ \Carbon\Carbon::parse($row->tgl_pengadaan)->format('d/m/Y') }}</td>
                 <td>{{ number_format($row->harga_brg) }}</td>
                 <td>{{ number_format($row->jmlh_brg * $row->harga_brg) }}</td>
-                <td>{{ \Carbon\Carbon::parse($row->tgl_approval_dir)->format('d/m/Y') }}</td>
             </tr>
             @empty
             <tr>
