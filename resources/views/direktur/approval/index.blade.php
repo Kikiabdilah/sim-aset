@@ -27,7 +27,6 @@
                 <th>Jumlah</th>
                 <th>Harga</th>
                 <th>Status Manager</th>
-                <th>Status Direktur</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -51,18 +50,6 @@
                     @endif
                 </td>
 
-                {{-- STATUS DIREKTUR --}}
-                <td>
-                    @if($row->stts_approval_dir == 'approved')
-                    <span class="badge bg-success">Approved</span>
-                    @elseif($row->stts_approval_dir == 'rejected')
-                    <span class="badge bg-danger">Rejected</span>
-                    @else
-                    <span class="badge bg-warning text-dark">Pending</span>
-                    @endif
-                </td>
-
-                {{-- AKSI --}}
                 <td class="d-flex gap-2">
 
                     {{-- Manager belum approve => direktur tidak bisa apa-apa --}}
@@ -71,6 +58,12 @@
 
                     {{-- Manager sudah approve => Direktur baru bisa approve/reject --}}
                     @elseif($row->stts_approval_dir == 'pending')
+
+                    <button class="btn btn-info btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalReview{{ $row->id }}">
+                        Review
+                    </button>
 
                     {{-- BUTTON APPROVE --}}
                     <button class="btn btn-success btn-sm"
@@ -101,67 +94,144 @@
 
     </table>
 
+{{-- ================== MODAL REVIEW SEMUA DATA ================== --}}
+@foreach ($usulan as $row)
+<div class="modal fade" id="modalReview{{ $row->id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Aset — {{ $row->nm_brg }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-bordered">
+
+                    <tr>
+                        <th>Kode Usulan</th>
+                        <td>{{ $row->kd_usulan }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Kode Barang</th>
+                        <td>{{ $row->kd_brg }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Nama Barang</th>
+                        <td>{{ $row->nm_brg }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Jumlah</th>
+                        <td>{{ $row->jmlh_brg }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Harga Satuan</th>
+                        <td>Rp {{ number_format($row->harga_brg) }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Total Harga</th>
+                        <td><strong>Rp {{ number_format($row->harga_brg * $row->jmlh_brg) }}</strong></td>
+                    </tr>
+
+                    <tr>
+                        <th>Tanggal Pengadaan</th>
+                        <td>{{ $row->tgl_pengadaan ? \Carbon\Carbon::parse($row->tgl_pengadaan)->format('d/m/Y') : '-' }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Satuan</th>
+                        <td>{{ $row->satuan_brg }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Masa Manfaat</th>
+                        <td>{{ $row->masa_manfaat }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Keterangan</th>
+                        <td>{{ $row->ket }}</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@endforeach
+
+
 </div>
 {{-- SWEETALERT2 SCRIPT --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    // APPROVE
+    function confirmApproval(url) {
+        Swal.fire({
+            title: "Yakin?",
+            text: "Anda akan menyetujui usulan ini.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#28a745",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Accept"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
 
-// APPROVE
-function confirmApproval(url) {
-    Swal.fire({
-        title: "Yakin?",
-        text: "Anda akan menyetujui usulan ini.",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#28a745",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Accept"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            let form = document.createElement('form');
-            form.method = 'POST';
-            form.action = url;
+                let csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = '{{ csrf_token() }}';
 
-            let csrf = document.createElement('input');
-            csrf.type = 'hidden';
-            csrf.name = '_token';
-            csrf.value = '{{ csrf_token() }}';
+                form.appendChild(csrf);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
 
-            form.appendChild(csrf);
-            document.body.appendChild(form);
-            form.submit();
-        }
-    });
-}
+    // REJECT
+    function confirmReject(url) {
+        Swal.fire({
+            title: "Yakin?",
+            text: "Anda akan menolak usulan ini.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Reject"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
 
-// REJECT
-function confirmReject(url) {
-    Swal.fire({
-        title: "Yakin?",
-        text: "Anda akan menolak usulan ini.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Reject"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            let form = document.createElement('form');
-            form.method = 'POST';
-            form.action = url;
+                let csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = '{{ csrf_token() }}';
 
-            let csrf = document.createElement('input');
-            csrf.type = 'hidden';
-            csrf.name = '_token';
-            csrf.value = '{{ csrf_token() }}';
-
-            form.appendChild(csrf);
-            document.body.appendChild(form);
-            form.submit();
-        }
-    });
-}
-
+                form.appendChild(csrf);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
 </script>
 @endsection
