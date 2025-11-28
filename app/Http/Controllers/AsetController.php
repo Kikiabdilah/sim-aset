@@ -33,11 +33,11 @@ class AsetController extends Controller
         }
 
         if ($tgl_awal && $tgl_akhir) {
-            $query->whereBetween('tgl_approval_dir', [$tgl_awal, $tgl_akhir]);
+            $query->whereBetween('tgl_pengadaan', [$tgl_awal, $tgl_akhir]);
         }
     }
 
-    $aset = $query->orderBy('tgl_approval_dir', 'desc')->get();
+    $aset = $query->orderBy('tgl_pengadaan', 'desc')->get();
 
     return view('aset.index', compact('aset'));
 }
