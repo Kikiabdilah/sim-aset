@@ -139,17 +139,12 @@
 
                     <tr>
                         <th>Tanggal Pengadaan</th>
-                        <td>{{ $row->tgl_pengadaan }}</td>
+                        <td>{{ $row->tgl_pengadaan ? \Carbon\Carbon::parse($row->tgl_pengadaan)->format('d/m/Y') : '-' }}</td>
                     </tr>
 
                     <tr>
                         <th>Satuan</th>
-                        <td>{{ $row->satuan }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Jenis Barang</th>
-                        <td>{{ $row->jenis_brg }}</td>
+                        <td>{{ $row->satuan_brg }}</td>
                     </tr>
 
                     <tr>
@@ -159,7 +154,7 @@
 
                     <tr>
                         <th>Keterangan</th>
-                        <td>{{ $row->keterangan }}</td>
+                        <td>{{ $row->ket }}</td>
                     </tr>
 
                 </table>
