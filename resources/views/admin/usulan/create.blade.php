@@ -97,7 +97,7 @@
                             <td>{{ $u->kd_usulan }}</td>
                             <td>{{ $u->nm_brg }}</td>
                             <td>{{ $u->jmlh_brg }}</td>
-                            <td>{{ $u->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $u->created_at->format('d-m-Y') }}</td>
 
                             {{-- Manager Status --}}
                             <td>
