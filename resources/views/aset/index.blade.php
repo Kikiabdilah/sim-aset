@@ -34,7 +34,6 @@
             {{-- BUTTONS --}}
             <div class="col-md-2 d-flex align-items-end gap-2">
                 <button type="submit" class="btn btn-primary w-100">Filter</button>
-
                 <a href="{{ route('aset.index') }}" class="btn btn-secondary">Reset</a>
             </div>
 
@@ -42,41 +41,49 @@
     </div>
 
     {{-- TABLE --}}
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Kode</th>
-                <th>Nama Barang</th>
-                <th>Jumlah</th>
-                <th>Umur Ekonomis</th>
-                <th>Tanggal Pengadaan</th>
-                <th>Harga</th>
-                <th>Total</th>
-            </tr>
-        </thead>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="">
+                    <th>No</th>
+                    <th>Kode</th>
+                    <th>Nama Barang</th>
+                    <th>Tanggal Pembelian</th>
+                    <th>Umur Ekonomis</th>
+                    <th>Harga</th>
+                    <th>Nilai Sisa</th>
+                    <th>Penyusutan Tahunan</th>
+                    <th>Akumulasi Penyusutan</th>
+                    <th>Nilai Buku</th>
+                </tr>
+            </thead>
 
-        <tbody>
-            @forelse ($aset as $row)
-            <tr>
-                {{-- NOMOR URUT --}}
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $row->kd_brg }}</td>
-                <td>{{ $row->nm_brg }}</td>
-                <td>{{ $row->jmlh_brg }}</td>
-                <td>{{ $row->masa_manfaat }}</td>
-                <td>{{ \Carbon\Carbon::parse($row->tgl_pengadaan)->format('d/m/Y') }}</td>
-                <td>{{ number_format($row->harga_brg) }}</td>
-                <td>{{ number_format($row->jmlh_brg * $row->harga_brg) }}</td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="8" class="text-center">Tidak ada aset ditemukan.</td>
-            </tr>
-            @endforelse
-        </tbody>
+            <tbody>
+                @forelse ($aset as $row)
+                <tr>
+                    <td></td>
+                    <td>{{ $row->kd_brg }}</td>
+                    <td>
+                        {{ $row->nm_brg }}
+                    </td>
+                    <td>{{ \Carbon\Carbon::parse($row->tgl_pengadaan ?: $row->created_at)->format('d/m/Y') }}</td>
+                    <td>{{ $row->masa_manfaat }} tahun</td>
+                    <td>Rp {{ number_format($row->harga_brg, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($row->nilai_sisa, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($row->penyusutan_tahunan, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($row->akumulasi_penyusutan, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($row->nilai_buku, 0, ',', '.') }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="11" class="text-center">Tidak ada aset ditemukan.</td>
+                </tr>
+                @endforelse
+            </tbody>
 
-    </table>
+        </table>
+    </div>
+
 
 </div>
 
