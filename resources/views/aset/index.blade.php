@@ -45,6 +45,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>No</th>
                 <th>Kode</th>
                 <th>Nama Barang</th>
                 <th>Jumlah</th>
@@ -58,6 +59,8 @@
         <tbody>
             @forelse ($aset as $row)
             <tr>
+                {{-- NOMOR URUT --}}
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $row->kd_brg }}</td>
                 <td>{{ $row->nm_brg }}</td>
                 <td>{{ $row->jmlh_brg }}</td>
@@ -68,7 +71,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="6" class="text-center">Tidak ada aset ditemukan.</td>
+                <td colspan="8" class="text-center">Tidak ada aset ditemukan.</td>
             </tr>
             @endforelse
         </tbody>
