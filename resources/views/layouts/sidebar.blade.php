@@ -1,18 +1,21 @@
 @php
-$role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
+$user = auth()->user();
+$role = $user?->role; // aman meskipun null
 @endphp
 
-{{-- SIDEBAR --}}
+{{-- Jika user belum login, hentikan render sidebar --}}
+@if (!$user)
+    @php return; @endphp
+@endif
+
 <div class="bg-dark text-white p-3" style="width:260px; min-height:100vh;">
 
     {{-- Profile --}}
     <div class="text-center mb-4">
-
         @php
-        $user = auth()->user();
-        $photo = $user->image
-        ? asset('storage/' . $user->image)
-        : 'https://ui-avatars.com/api/?name=' . urlencode($user->username) . '&background=0D8ABC&color=fff';
+            $photo = $user->image
+                ? asset('storage/' . $user->image)
+                : 'https://ui-avatars.com/api/?name=' . urlencode($user->username) . '&background=0D8ABC&color=fff';
         @endphp
 
         <img src="{{ $photo }}"
@@ -24,10 +27,10 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
         <h6 class="mb-0">{{ ucwords($user->username) }}</h6>
     </div>
 
-    {{-- Menu --}}
+    {{-- MENU --}}
     <ul class="nav flex-column">
 
-        {{-- Dashboard (semua role) --}}
+        {{-- Dashboard --}}
         <li class="nav-item mb-1">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
                 {{ request()->is('dashboard') ? 'bg-secondary' : '' }}"
@@ -35,40 +38,41 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
         </li>
-        {{-- === MENU ADMIN === --}}
+
+        {{-- Admin --}}
         @if ($role == 1)
         <li class="nav-item mb-1">
-            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
-            {{ request()->routeIs('admin.usulan.create') ? 'bg-secondary' : '' }}"
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu 
+                {{ request()->routeIs('admin.usulan.create') ? 'bg-secondary' : '' }}"
                 href="{{ route('admin.usulan.create') }}">
                 <i class="bi bi-file-earmark-plus"></i> Usulan Pengadaan Aset
             </a>
         </li>
         @endif
 
-        {{-- === MENU MANAGER === --}}
+        {{-- Manager --}}
         @if ($role == 2)
         <li class="nav-item mb-1">
-            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
-            {{ request()->routeIs('manager.approval.index') ? 'bg-secondary' : '' }}"
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu 
+                {{ request()->routeIs('manager.approval.index') ? 'bg-secondary' : '' }}"
                 href="{{ route('manager.approval.index') }}">
                 <i class="bi bi-check2-circle"></i> Approval Manager
             </a>
         </li>
         @endif
 
-        {{-- === MENU DIREKTUR === --}}
+        {{-- Direktur --}}
         @if ($role == 3)
         <li class="nav-item mb-1">
-            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
-            {{ request()->routeIs('direktur.approval.index') ? 'bg-secondary' : '' }}"
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu 
+                {{ request()->routeIs('direktur.approval.index') ? 'bg-secondary' : '' }}"
                 href="{{ route('direktur.approval.index') }}">
                 <i class="bi bi-check2-square"></i> Approval Direktur
             </a>
         </li>
         @endif
 
-        {{-- Daftar Aset (semua role) --}}
+        {{-- Daftar Aset --}}
         <li class="nav-item mb-1">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
                 href="{{ route('aset.index') }}">
@@ -76,7 +80,7 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
             </a>
         </li>
 
-        {{-- Pemeliharaan Aset (semua role) --}}
+        {{-- Pemeliharaan --}}
         <li class="nav-item mb-1">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
                 href="#">
@@ -84,7 +88,7 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
             </a>
         </li>
 
-        {{-- Rekomendasi Penghapusan (semua role) --}}
+        {{-- Rekomendasi Penghapusan --}}
         <li class="nav-item mb-1">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
                 href="#">
@@ -92,7 +96,7 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
             </a>
         </li>
 
-        {{-- Laporan (semua role) --}}
+        {{-- Laporan --}}
         <li class="nav-item">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
                 href="#">
@@ -105,8 +109,8 @@ $role = auth()->user()->role; // 1 = admin, 2 = manager, 3 = direktur
 </div>
 
 <style>
-    .hover-menu:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        transition: 0.2s;
-    }
+.hover-menu:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: 0.2s;
+}
 </style>

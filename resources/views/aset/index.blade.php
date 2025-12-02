@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <h3>Daftar Aset Disetujui</h3>
+    <h3 class="font-bold text-2xl">Daftar Aset</h3>
 
     {{-- FILTER FORM --}}
     <div class="card p-3 mt-3 mb-4">
