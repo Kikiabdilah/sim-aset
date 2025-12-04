@@ -17,7 +17,9 @@ class UsulanAsetController extends Controller
 
     public function create()
     {
-        return view('admin.usulan.create');
+        // FIX: $usulan harus dikirim ke view
+        $usulan = UsulanAset::orderBy('created_at', 'desc')->get();
+        return view('admin.usulan.create', compact('usulan'));
     }
 
     public function store(Request $req)
@@ -37,9 +39,12 @@ class UsulanAsetController extends Controller
             'nm_brg' => $req->nm_brg,
             'jmlh_brg' => $req->jmlh_brg,
             'harga_brg' => $req->harga_brg,
+
+            // FIX NAMA FIELD: gunakan name="tgl_pengadaan" di form
             'tgl_pengadaan' => $req->tgl_pengadaan
                 ? Carbon::createFromFormat('d/m/Y', $req->tgl_pengadaan)->format('Y-m-d')
                 : null,
+
             'satuan_brg' => $req->satuan_brg,
             'jns_brg' => $req->jns_brg,
             'masa_manfaat' => $req->masa_manfaat,
