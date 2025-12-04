@@ -27,6 +27,7 @@ class UsulanAsetController extends Controller
         $req->validate([
             'kd_brg'        => 'required',
             'nm_brg'        => 'required',
+            'jns_brg'       => 'required',
             'jmlh_brg'      => 'required|integer|min:1',
             'harga_brg'     => 'required|integer|min:1',
             'satuan_brg'    => 'required',
@@ -37,16 +38,13 @@ class UsulanAsetController extends Controller
             'kd_usulan' => 'USL-' . Str::upper(Str::random(6)),
             'kd_brg' => $req->kd_brg,
             'nm_brg' => $req->nm_brg,
+            'jns_brg' => $req->jns_brg,   // <= tambahan
             'jmlh_brg' => $req->jmlh_brg,
             'harga_brg' => $req->harga_brg,
-
-            // FIX NAMA FIELD: gunakan name="tgl_pengadaan" di form
             'tgl_pengadaan' => $req->tgl_pengadaan
                 ? Carbon::createFromFormat('d/m/Y', $req->tgl_pengadaan)->format('Y-m-d')
                 : null,
-
             'satuan_brg' => $req->satuan_brg,
-            'jns_brg' => $req->jns_brg,
             'masa_manfaat' => $req->masa_manfaat,
             'ket' => $req->ket,
         ]);
