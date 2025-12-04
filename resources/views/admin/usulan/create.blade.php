@@ -27,6 +27,16 @@
                         <input type="text" name="nm_brg" class="form-control" required>
                     </div>
 
+                    <div class="col-md-3">
+                        <label class="form-label">Jenis Barang</label>
+                        <select name="jns_brg" class="form-select" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Bangunan">Bangunan</option>
+                            <option value="Kendaraan">Kendaraan</option>
+                            <option value="Peralatan Kantor">Peralatan Kantor</option>
+                        </select>
+                    </div>
+
                     <div class="col-md-2">
                         <label class="form-label">Jumlah</label>
                         <input type="number" name="jmlh_brg" class="form-control" required>
@@ -39,13 +49,7 @@
 
                     <div class="col-md-3">
                         <label class="form-label">Tanggal Pengadaan</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="tgl_pengadaan" 
-                            name="tgl_pengadaan"
-                            placeholder="dd/mm/yyyy"
-                        >
+                        <input type="text" class="form-control" id="tgl_pengadaan" name="tgl_pengadaan" placeholder="dd/mm/yyyy">
                     </div>
 
                     <div class="col-md-2">
@@ -69,6 +73,7 @@
                     </div>
 
                 </div>
+
 
                 <button class="btn btn-primary mt-3 px-4">Save</button>
             </form>
@@ -106,22 +111,22 @@
                             {{-- Manager --}}
                             <td>
                                 @if ($u->stts_approval_mg == 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                <span class="badge bg-warning text-dark">Pending</span>
                                 @elseif ($u->stts_approval_mg == 'approved')
-                                    <span class="badge bg-success">Approved</span>
+                                <span class="badge bg-success">Approved</span>
                                 @else
-                                    <span class="badge bg-danger">Rejected</span>
+                                <span class="badge bg-danger">Rejected</span>
                                 @endif
                             </td>
 
                             {{-- Direktur --}}
                             <td>
                                 @if ($u->stts_approval_dir == 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                <span class="badge bg-warning text-dark">Pending</span>
                                 @elseif ($u->stts_approval_dir == 'approved')
-                                    <span class="badge bg-success">Approved</span>
+                                <span class="badge bg-success">Approved</span>
                                 @else
-                                    <span class="badge bg-danger">Rejected</span>
+                                <span class="badge bg-danger">Rejected</span>
                                 @endif
                             </td>
 
@@ -137,9 +142,9 @@
 </div>
 
 <script>
-flatpickr("#tgl_pengadaan", {
-    dateFormat: "d/m/Y"
-});
+    flatpickr("#tgl_pengadaan", {
+        dateFormat: "d/m/Y"
+    });
 </script>
 
 @endsection
