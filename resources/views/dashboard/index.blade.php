@@ -33,7 +33,6 @@
 <script>
     const ctx = document.getElementById('pieChartAset').getContext('2d');
 
-    // LABEL + DATA DARI CONTROLLER
     const labels = @json($labels);
     const dataPie = @json($data);
 
