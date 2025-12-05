@@ -74,7 +74,8 @@ $role = $user?->role; // aman meskipun null
 
         {{-- Daftar Aset --}}
         <li class="nav-item mb-1">
-            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
+                {{ request()->routeIs('aset.index') ? 'bg-secondary' : '' }}"
                 href="{{ route('aset.index') }}">
                 <i class="bi bi-box-seam"></i> Daftar Aset
             </a>
@@ -82,8 +83,9 @@ $role = $user?->role; // aman meskipun null
 
         {{-- Pemeliharaan --}}
         <li class="nav-item mb-1">
-            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
-                href="#">
+            <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu
+                {{ request()->is('maintenance*') ? 'bg-secondary' : '' }}"
+                href="{{ route('maintenance.index') }}">
                 <i class="bi bi-hammer"></i> Pemeliharaan Aset
             </a>
         </li>

@@ -6,6 +6,10 @@ use App\Http\Controllers\ApprovalManagerController;
 use App\Http\Controllers\ApprovalDirekturController;
 use App\Http\Controllers\AsetController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\PenghapusanController;
+use App\Http\Controllers\LaporanController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,10 +19,9 @@ Route::get('/', function () {
 // Semua halaman yang butuh login
 Route::middleware('auth')->group(function () {
 
-    // Dashboard
+    // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
-
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -51,6 +54,29 @@ Route::middleware('auth')->group(function () {
 
     // ASET
     Route::get('/aset', [AsetController::class, 'index'])->name('aset.index');
+
+    // PEMELIHARAAN ASET
+    Route::prefix('maintenance')->name('maintenance.')->middleware('auth')->group(function () {
+        Route::get('/', [MaintenanceController::class, 'index'])->name('index');
+        Route::get('/{id}', [MaintenanceController::class, 'show'])->name('show');
+        Route::get('/{id}/create', [MaintenanceController::class, 'create'])->name('create');
+        Route::post('/{id}/store', [MaintenanceController::class, 'store'])->name('store');
+    });
+
+
+    // // REKOMENDASI PENGHAPUSAN
+    // Route::prefix('hapus')->name('hapus.')->group(function () {
+    //     Route::get('/', [PenghapusanController::class, 'index'])->name('index');
+    //     Route::post('/store', [PenghapusanController::class, 'store'])->name('store');
+    // });
+
+    // // LAPORAN
+    // Route::prefix('laporan')->name('laporan.')->group(function () {
+    //     Route::get('/', [LaporanController::class, 'index'])->name('index');
+    //     Route::get('/aset', [LaporanController::class, 'laporanAset'])->name('aset');
+    //     Route::get('/penghapusan', [LaporanController::class, 'laporanPenghapusan'])->name('penghapusan');
+    //     Route::get('/maintenance', [LaporanController::class, 'laporanMaintenance'])->name('maintenance');
+    // });
 });
 
 require __DIR__ . '/auth.php';
