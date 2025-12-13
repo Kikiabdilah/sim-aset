@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +9,7 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -18,25 +18,22 @@
 
 <body class="font-sans antialiased">
 
-    <div class="d-flex">
+    <div class="d-flex dashboard-wrapper">
 
         {{-- SIDEBAR --}}
         @include('layouts.sidebar')
 
-        {{-- MAIN WRAPPER --}}
-        <div class="flex-grow-1">
+        {{-- MAIN CONTENT --}}
+        <div class="flex-grow-1 dashboard-content">
 
             @include('layouts.topbar')
 
-            {{-- MAIN CONTENT --}}
-            <div class="p-4">
+            <main class="p-4 content-area">
                 @yield('content')
-            </div>
+            </main>
 
         </div>
-
     </div>
 
 </body>
-
 </html>
