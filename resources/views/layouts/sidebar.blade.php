@@ -93,7 +93,7 @@ $role = $user?->role; // aman meskipun null
         {{-- Rekomendasi Penghapusan --}}
         <li class="nav-item mb-1">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
-                href="#">
+                href="{{ route('hapus.index') }}">
                 <i class="bi bi-trash"></i> Rekomendasi Penghapusan
             </a>
         </li>

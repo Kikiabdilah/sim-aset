@@ -64,11 +64,11 @@ Route::middleware('auth')->group(function () {
     });
 
 
-    // // REKOMENDASI PENGHAPUSAN
-    // Route::prefix('hapus')->name('hapus.')->group(function () {
-    //     Route::get('/', [PenghapusanController::class, 'index'])->name('index');
-    //     Route::post('/store', [PenghapusanController::class, 'store'])->name('store');
-    // });
+    // REKOMENDASI PENGHAPUSAN
+    Route::prefix('hapus')->name('hapus.')->group(function () {
+        Route::get('/', [PenghapusanController::class, 'index'])->name('index');
+        // Route::post('/store', [PenghapusanController::class, 'store'])->name('store');
+    });
 
     // // LAPORAN
     // Route::prefix('laporan')->name('laporan.')->group(function () {

@@ -29,21 +29,16 @@ class UsulanAset extends Model
        ============================ */
     public function getNilaiSisaAttribute()
     {
-        return round((float) $this->harga_brg * (float) $this->persentase_sisa);
+        return round($this->harga_brg * $this->persentase_sisa);
     }
 
     /* ============================
-       PENYUSUTAN PER TAHUN (GARIS LURUS)
+       PENYUSUTAN PER TAHUN
        ============================ */
     public function getPenyusutanTahunanAttribute()
     {
-        $harga = (float) $this->harga_brg;
-        $nilaiSisa = (float) $this->nilai_sisa;
-        $umur = (int) $this->masa_manfaat;
-
-        if ($umur <= 0) return 0;
-
-        return ($harga - $nilaiSisa) / $umur;
+        if ($this->masa_manfaat <= 0) return 0;
+        return ($this->harga_brg - $this->nilai_sisa) / $this->masa_manfaat;
     }
 
     /* ============================
@@ -51,17 +46,10 @@ class UsulanAset extends Model
        ============================ */
     public function getUmurBerjalanAttribute()
     {
-        $tgl = $this->tgl_pengadaan ?: ($this->created_at?->toDateString() ?? null);
-        if (!$tgl) return 0;
+        if (!$this->tgl_pengadaan) return 0;
 
-        $tahunBeli = Carbon::parse($tgl)->year;
-        $tahunNow = Carbon::now()->year;
-
-        $umur = $tahunNow - $tahunBeli;
-
-        if ($umur < 0) $umur = 0;
-
-        return min($umur, (int) $this->masa_manfaat);
+        $umur = Carbon::now()->year - Carbon::parse($this->tgl_pengadaan)->year;
+        return min(max($umur, 0), $this->masa_manfaat);
     }
 
     /* ============================
@@ -73,22 +61,92 @@ class UsulanAset extends Model
     }
 
     /* ============================
-       NILAI BUKU SAAT INI
+       NILAI BUKU
        ============================ */
     public function getNilaiBukuAttribute()
     {
-        $nilai = (float) $this->harga_brg - (float) $this->akumulasi_penyusutan;
-
-        // jangan lebih kecil dari nilai sisa
-        return max($nilai, (float) $this->nilai_sisa);
+        return max(
+            $this->harga_brg - $this->akumulasi_penyusutan,
+            $this->nilai_sisa
+        );
     }
 
     /* ============================
-       FORMAT TANGGAL PENGADAAN (DD/MM/YYYY)
+       SISA UMUR
        ============================ */
+    public function getSisaUmurAttribute()
+    {
+        return max($this->masa_manfaat - $this->umur_berjalan, 0);
+    }
+
+    /* ============================
+       BOBOT KONDISI
+       ============================ */
+    public function getBobotKondisiAttribute()
+    {
+        return match ($this->kondisi_brg) {
+            'PERBAIKAN BERAT'  => 3,
+            'PERBAIKAN RINGAN' => 2,
+            default            => 1,
+        };
+    }
+
+    /* ============================
+       BOBOT AKUMULASI
+       ============================ */
+    public function getBobotAkumulasiAttribute()
+    {
+        return match (true) {
+            $this->umur_berjalan > 4 => 5,
+            $this->umur_berjalan == 4 => 4,
+            $this->umur_berjalan == 3 => 3,
+            $this->umur_berjalan == 2 => 2,
+            default => 1,
+        };
+    }
+
+    /* ============================
+       BOBOT SISA UMUR
+       ============================ */
+    public function getBobotSisaUmurAttribute()
+    {
+        return match (true) {
+            $this->sisa_umur == 0 => 5,
+            $this->sisa_umur <= 2 => 4,
+            $this->sisa_umur <= 5 => 3,
+            $this->sisa_umur <= 10 => 2,
+            default => 1,
+        };
+    }
+
+    /* ============================
+       BOBOT NILAI BUKU (FIX BUG)
+       ============================ */
+    public function getBobotNilaiBukuAttribute()
+    {
+        $nb = $this->nilai_buku;
+
+        return match (true) {
+            $nb <= 500000  => 10,
+            $nb <= 1000000 => 9,
+            $nb <= 1500000 => 8,
+            $nb <= 2000000 => 7,
+            $nb <= 2500000 => 6,
+            $nb <= 3000000 => 5,
+            $nb <= 3500000 => 4,
+            $nb <= 4000000 => 3,
+            $nb <= 4500000 => 2,
+            default        => 1,
+        };
+    }
+    protected $casts = [
+        'tgl_pengadaan' => 'date',
+    ];
+
     public function getTglPengadaanFormattedAttribute()
     {
-        $tgl = $this->tgl_pengadaan ?: ($this->created_at?->toDateString() ?? null);
-        return $tgl ? Carbon::parse($tgl)->format('d/m/Y') : '-';
+        return $this->tgl_pengadaan
+            ? $this->tgl_pengadaan->format('d/m/Y')
+            : '-';
     }
 }

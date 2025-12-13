@@ -10,31 +10,65 @@ class AsetController extends Controller
 {
     public function index(Request $request)
     {
+        // ============================
+        // SORTING DEFAULT
+        // ============================
         $sort  = $request->get('sort', 'tgl_pengadaan');
         $order = $request->get('order', 'desc');
 
-        $query = UsulanAset::where('stts_approval_mg', 'approved')
+        // ============================
+        // BASE QUERY
+        // ============================
+        $query = UsulanAset::query()
+            ->where('stts_approval_mg', 'approved')
             ->where('stts_approval_dir', 'approved');
 
-        // SEARCH
-        if ($request->search) {
-            $query->where(function ($q) use ($request) {
-                $q->where('nm_brg', 'like', '%' . $request->search . '%')
-                  ->orWhere('kd_brg', 'like', '%' . $request->search . '%');
+        // ============================
+        // SEARCH (NAMA / KODE)
+        // ============================
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('nm_brg', 'like', "%{$search}%")
+                  ->orWhere('kd_brg', 'like', "%{$search}%");
             });
         }
 
-        // FILTER TANGGAL (DD/MM/YYYY)
-        if ($request->tanggal_awal && $request->tanggal_akhir) {
+        // ============================
+        // FILTER TANGGAL (dd/mm/yyyy)
+        // ============================
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
             try {
-                $awal  = Carbon::createFromFormat('d/m/Y', $request->tanggal_awal)->format('Y-m-d');
-                $akhir = Carbon::createFromFormat('d/m/Y', $request->tanggal_akhir)->format('Y-m-d');
+                $awal  = Carbon::createFromFormat('d/m/Y', $request->tanggal_awal)->startOfDay();
+                $akhir = Carbon::createFromFormat('d/m/Y', $request->tanggal_akhir)->endOfDay();
 
                 $query->whereBetween('tgl_pengadaan', [$awal, $akhir]);
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+                // Jika format salah → abaikan filter
+            }
         }
 
-        // ORDER
+        // ============================
+        // VALIDASI FIELD SORT
+        // ============================
+        $allowedSort = [
+            'kd_brg',
+            'nm_brg',
+            'tgl_pengadaan',
+            'masa_manfaat',
+            'harga_brg'
+        ];
+
+        if (!in_array($sort, $allowedSort)) {
+            $sort = 'tgl_pengadaan';
+        }
+
+        $order = $order === 'asc' ? 'asc' : 'desc';
+
+        // ============================
+        // EXECUTE QUERY
+        // ============================
         $aset = $query->orderBy($sort, $order)->get();
 
         return view('aset.index', compact('aset', 'sort', 'order'));
