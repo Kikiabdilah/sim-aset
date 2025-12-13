@@ -44,13 +44,11 @@ class AsetController extends Controller
                 $akhir = Carbon::createFromFormat('d/m/Y', $request->tanggal_akhir)->endOfDay();
 
                 $query->whereBetween('tgl_pengadaan', [$awal, $akhir]);
-            } catch (\Exception $e) {
-                // Jika format salah → abaikan filter
-            }
+            } catch (\Exception $e) {}
         }
 
         // ============================
-        // VALIDASI FIELD SORT
+        // VALIDASI SORT FIELD
         // ============================
         $allowedSort = [
             'kd_brg',
@@ -67,9 +65,11 @@ class AsetController extends Controller
         $order = $order === 'asc' ? 'asc' : 'desc';
 
         // ============================
-        // EXECUTE QUERY
+        // EXECUTE QUERY + PAGINATION
         // ============================
-        $aset = $query->orderBy($sort, $order)->get();
+        $aset = $query->orderBy($sort, $order)
+                      ->paginate(10)
+                      ->withQueryString();
 
         return view('aset.index', compact('aset', 'sort', 'order'));
     }
