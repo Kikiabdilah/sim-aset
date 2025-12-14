@@ -98,13 +98,13 @@ $role = $user?->role; // aman meskipun null
             </a>
         </li>
 
-        {{-- Laporan --}}
+        <!-- {{-- Laporan --}}
         <li class="nav-item">
             <a class="nav-link text-white d-flex align-items-center gap-2 px-2 rounded hover-menu"
                 href="#">
                 <i class="bi bi-file-earmark-bar-graph"></i> Laporan
             </a>
-        </li>
+        </li> -->
 
     </ul>
 
