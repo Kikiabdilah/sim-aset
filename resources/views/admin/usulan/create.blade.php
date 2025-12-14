@@ -71,7 +71,6 @@
                     </div>
                 </div>
 
-                {{-- BARIS 3 --}}
                 <div class="row g-3">
                     <div class="col-md-12">
                         <label class="form-label">Keterangan</label>

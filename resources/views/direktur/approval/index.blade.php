@@ -37,7 +37,7 @@
                 <td>{{ $row->kd_brg }}</td>
                 <td>{{ $row->nm_brg }}</td>
                 <td>{{ $row->jmlh_brg }}</td>
-                <td>{{ number_format($row->harga_brg) }}</td>
+                <td>{{ number_format($row->harga_brg,0,',','.') }}</td>
 
                 {{-- STATUS MANAGER --}}
                 <td>
@@ -135,12 +135,12 @@
 
                         <tr>
                             <th>Harga Satuan</th>
-                            <td>Rp {{ number_format($row->harga_brg) }}</td>
+                            <td>Rp {{ number_format($row->harga_brg,0,',','.') }}</td>
                         </tr>
 
                         <tr>
                             <th>Total Harga</th>
-                            <td><strong>Rp {{ number_format($row->harga_brg * $row->jmlh_brg) }}</strong></td>
+                            <td><strong>Rp {{ number_format($row->harga_brg * $row->jmlh_brg,0,',','.') }}</strong></td>
                         </tr>
 
                         <tr>
