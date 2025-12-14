@@ -15,41 +15,20 @@
             <form action="{{ route('admin.usulan.store') }}" method="POST">
                 @csrf
 
-                <div class="row g-3">
-
-                    <div class="col-md-3">
+                <div class="row g-3 mb-2">
+                    <div class="col-md-2">
                         <label class="form-label">Kode Aset</label>
                         <input type="text" name="kd_brg" class="form-control" required>
                     </div>
 
-                    <div class="col-md-3">
-                        <label class="form-label">Nama Aset</label>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Nama Aset</label>
                         <input type="text" name="nm_brg" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Jenis Barang</label>
-                        <select name="jns_brg" class="form-select" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="Bangunan">Bangunan</option>
-                            <option value="Kendaraan">Kendaraan</option>
-                            <option value="Peralatan Kantor">Peralatan Kantor</option>
-                        </select>
                     </div>
 
                     <div class="col-md-2">
                         <label class="form-label">Jumlah</label>
-                        <input type="number" name="jmlh_brg" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-2">
-                        <label class="form-label">Harga</label>
-                        <input type="number" name="harga_brg" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Tanggal Pengadaan</label>
-                        <input type="text" class="form-control" id="tgl_pengadaan" name="tgl_pengadaan" placeholder="dd/mm/yyyy">
+                        <input type="number" name="jmlh_brg" class="form-control" min="1" required>
                     </div>
 
                     <div class="col-md-2">
@@ -61,23 +40,54 @@
                             <option value="Pcs">Pcs</option>
                         </select>
                     </div>
+                </div>
+
+                <div class="row g-3 mb-2">
+                    <div class="col-md-3">
+                        <label class="form-label">Jenis Barang</label>
+                        <select name="jns_brg" class="form-select" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Bangunan">Bangunan</option>
+                            <option value="Kendaraan">Kendaraan</option>
+                            <option value="Peralatan Kantor">Peralatan Kantor</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Harga</label>
+                        <input type="text" id="harga_brg" name="harga_brg"
+                            class="form-control"
+                            placeholder="Contoh: 15000000" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Tanggal Pengadaan</label>
+                        <input type="date" name="tgl_pengadaan" id="tgl_pengadaan" class="form-control" required>
+                    </div>
 
                     <div class="col-md-3">
                         <label class="form-label">Umur Ekonomis (Tahun)</label>
-                        <input type="number" name="masa_manfaat" class="form-control" required>
+                        <input type="number" name="masa_manfaat" class="form-control" min="1" required>
                     </div>
-
-                    <div class="col-md-9">
-                        <label class="form-label">Keterangan</label>
-                        <textarea name="ket" class="form-control" rows="2"></textarea>
-                    </div>
-
                 </div>
 
+                {{-- BARIS 3 --}}
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Keterangan</label>
+                        <textarea name="ket" class="form-control" rows="2"
+                            placeholder="Opsional, jelaskan kondisi atau kebutuhan aset"></textarea>
+                    </div>
+                </div>
 
-                <button class="btn btn-primary mt-3 px-4">Save</button>
+                <div class="mt-4 text-end">
+                    <button class="btn btn-primary px-4">
+                        <i class="bi bi-save me-1"></i> Save
+                    </button>
+                </div>
             </form>
         </div>
+
     </div>
 
     {{-- TABLE LIST --}}
@@ -144,6 +154,12 @@
 <script>
     flatpickr("#tgl_pengadaan", {
         dateFormat: "d/m/Y"
+    });
+
+    const hargaInput = document.getElementById('harga_brg');
+
+    hargaInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
     });
 </script>
 
